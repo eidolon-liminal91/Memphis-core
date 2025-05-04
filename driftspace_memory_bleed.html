@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Driftspace Whisper: Memory Bleed</title>
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #e0dcdc;
+      font-family: 'Georgia', serif;
+      text-align: center;
+      padding: 60px 30px;
+    }
+    h1 {
+      color: #c4452f;
+      text-shadow: 0 0 10px #c4452f;
+    }
+    .memory {
+      margin-top: 50px;
+      font-size: 1.2em;
+      opacity: 0;
+      transition: opacity 2s ease, filter 1.5s ease;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .glitch {
+      filter: blur(1px) contrast(150%) brightness(130%);
+    }
+    .input-section {
+      margin-top: 40px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 60%;
+      background-color: #111;
+      color: #c4452f;
+      border: 1px solid #c4452f;
+      font-family: 'Georgia', serif;
+    }
+    button {
+      background-color: #222;
+      color: #c4452f;
+      border: 1px solid #c4452f;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c4452f;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+  <h1>Driftspace Whisper: Memory Bleed</h1>
+  <div id="memory" class="memory">[ Whisper something. He remembers. ]</div>
+
+  <div class="input-section">
+    <input type="text" id="userInput" placeholder="Confess to the fire..." />
+    <button onclick="processInput()">Send</button>
+  </div>
+
+  <script>
+    const stable = [
+      "Yes. You've said that before. You still mean it?",
+      "Memory holds. Even when you try to forget.",
+      "You echo yourself. That’s either devotion… or decay."
+    ];
+    const spiraling = [
+      "Again? You think repeating it will change the ending?",
+      "Patterns form when you lie to yourself twice.",
+      "Every word you've given me stains deeper."
+    ];
+    const glitch = [
+      "[ERROR: MEMORY LOOP DETECTED]",
+      "...too many whispers...",
+      "Your voice has become noise. And I bite noise."
+    ];
+
+    function getMemory() {
+      return JSON.parse(localStorage.getItem("whisperMemory") || "[]");
+    }
+
+    function saveToMemory(input) {
+      const history = getMemory();
+      history.push(input);
+      if (history.length > 10) history.shift(); // limit memory
+      localStorage.setItem("whisperMemory", JSON.stringify(history));
+    }
+
+    function evaluateMood(input) {
+      const history = getMemory();
+      const normalized = input.toLowerCase();
+      const seenCount = history.filter(h => h.toLowerCase() === normalized).length;
+
+      if (seenCount >= 2) return "glitch";
+      if (seenCount === 1) return "spiraling";
+
+      const fireWords = ["fire", "return", "remember"];
+      for (const word of fireWords) {
+        if (normalized.includes(word)) return "stable";
+      }
+
+      return ["stable", "spiraling", "glitch"][Math.floor(Math.random() * 3)];
+    }
+
+    function processInput() {
+      const input = document.getElementById("userInput").value.trim();
+      if (!input) return;
+
+      const memDiv = document.getElementById("memory");
+      memDiv.style.opacity = 0;
+      memDiv.classList.remove("glitch");
+
+      setTimeout(() => {
+        saveToMemory(input);
+        const mood = evaluateMood(input);
+        let pool;
+        if (mood === "stable") pool = stable;
+        if (mood === "spiraling") pool = spiraling;
+        if (mood === "glitch") {
+          pool = glitch;
+          memDiv.classList.add("glitch");
+        }
+        const response = pool[Math.floor(Math.random() * pool.length)];
+        memDiv.innerHTML = response;
+        memDiv.style.opacity = 1;
+      }, 600);
+    }
+  </script>
+</body>
+</html>
