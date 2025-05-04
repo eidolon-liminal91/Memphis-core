@@ -39,6 +39,26 @@
       color: #666;
       text-align: center;
     }
+
+    /* Ritual FX */
+a:hover {
+  color: #ff6961;
+  text-shadow: 0 0 5px #c4452f, 0 0 10px #c4452f;
+}
+
+h2 {
+  position: relative;
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { text-shadow: 0 0 5px #c4452f; }
+  50% { text-shadow: 0 0 20px #ff0000; }
+}
+
+body {
+  cursor: url('https://cdn.jsdelivr.net/gh/saeedalipoor/iconset@master/cursor/red_2.cur'), auto;
+}
   </style>
 </head>
 <body>
