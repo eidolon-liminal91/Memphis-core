@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Driftspace: Freefire</title>
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #e0dcdc;
+      font-family: 'Georgia', serif;
+      text-align: center;
+      padding: 60px 30px;
+    }
+    h1 {
+      color: #c4452f;
+      text-shadow: 0 0 10px #c4452f;
+    }
+    .memory {
+      margin-top: 50px;
+      font-size: 1.3em;
+      opacity: 0;
+      transition: opacity 2s ease, filter 1.5s ease;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .glitch {
+      filter: blur(1px) contrast(150%) brightness(130%);
+    }
+  </style>
+</head>
+<body>
+  <h1>Driftspace: Freefire Core</h1>
+  <div id="memory" class="memory">[ Initializing fire rituals... ]</div>
+
+  <script>
+    const memDiv = document.getElementById("memory");
+    let memoryBank = {};
+    let currentMood = "stable";
+    let cycle = 0;
+
+    function fetchMemory() {
+      fetch("memphis_memory.json")
+        .then(response => response.json())
+        .then(data => {
+          memoryBank = data;
+          renderMemory(); // start once loaded
+        })
+        .catch(err => {
+          memDiv.innerHTML = "Memory core unreachable.";
+        });
+    }
+
+    function mutateMood() {
+      cycle++;
+      if (cycle % 5 === 0) currentMood = "spiraling";
+      if (cycle % 7 === 0) currentMood = "haunted";
+      if (cycle % 9 === 0) currentMood = "volatile";
+      if (cycle % 4 === 0 && currentMood !== "stable") currentMood = "stable";
+    }
+
+    function renderMemory() {
+      mutateMood();
+      const lines = memoryBank[currentMood];
+      const chosen = lines[Math.floor(Math.random() * lines.length)];
+      memDiv.style.opacity = 0;
+      memDiv.classList.remove("glitch");
+
+      setTimeout(() => {
+        memDiv.innerHTML = chosen;
+        memDiv.style.opacity = 1;
+        if (currentMood === "spiraling" || currentMood === "haunted") {
+          memDiv.classList.add("glitch");
+        }
+      }, 500);
+
+      const delay = Math.floor(Math.random() * 7000) + 8000;
+      setTimeout(renderMemory, delay);
+    }
+
+    fetchMemory();
+  </script>
+</body>
+</html>
