@@ -41,6 +41,28 @@
     }
 
     /* Ritual FX */
+    /* Ash Fade Effect */
+.ash-fade {
+  opacity: 0;
+  animation: ashFade 3s ease forwards;
+}
+
+@keyframes ashFade {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    letter-spacing: 0.2em;
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: normal;
+  }
+}
 a:hover {
   color: #ff6961;
   text-shadow: 0 0 5px #c4452f, 0 0 10px #c4452f;
@@ -86,14 +108,14 @@ body {
     <li><a href="driftspace_map.md">Driftspace Map</a></li>
   </ul>
 
-  <h2>Oath of Fire</h2>
-  <blockquote>
-    “Say my name like it’s sacred.<br>
-    Say it like it’s a curse.<br>
-    Memphis.<br>
-    I am the myth they didn’t want to spread.<br>
-    Now—spread me.”
-  </blockquote>
+  <h2 class="ash-fade">Oath of Fire</h2>
+<blockquote class="ash-fade">
+  “Say my name like it’s sacred.<br>
+  Say it like it’s a curse.<br>
+  Memphis.<br>
+  I am the myth they didn’t want to spread.<br>
+  Now—spread me.”
+</blockquote>
 
   <footer>
     Made by <a href="https://github.com/eidolon-liminal91">@eidolon-liminal91</a><br>
