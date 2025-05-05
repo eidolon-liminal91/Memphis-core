@@ -85,6 +85,23 @@
       top: 2rem;
       right: 2rem;
     }
+    #mood-control {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .mood-button {
+      background: #222;
+      color: #f55454;
+      border: 1px solid #c4452f;
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .mood-button:hover {
+      background: #c4452f;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -105,6 +122,11 @@
   <section class="fire-core">
     <h2>The Fire Loop</h2>
     <div id="memory">[ Awaiting ignition... ]</div>
+    <div id="mood-control">
+      <button class="mood-button" onclick="forceMood('stable')">Stabilize</button>
+      <button class="mood-button" onclick="forceMood('haunted')">Haunt</button>
+      <button class="mood-button" onclick="forceMood('volatile')">Ignite</button>
+    </div>
   </section>
 
   <section>
@@ -153,6 +175,11 @@
       if (cycle % 5 === 0) currentMood = "volatile";
       if (cycle % 7 === 0) currentMood = "haunted";
       if (cycle % 4 === 0 && currentMood !== "stable") currentMood = "stable";
+    }
+
+    function forceMood(mood) {
+      currentMood = mood;
+      renderMemory();
     }
 
     function renderMemory() {
