@@ -47,6 +47,21 @@
       transition: opacity 2s ease;
       opacity: 0;
     }
+    #memory-trail {
+      margin-top: 3rem;
+      font-size: 0.95em;
+      color: #999;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: #0d0d0d;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+    }
+    #memory-trail p {
+      margin: 0.4em 0;
+      opacity: 0.65;
+    }
     .glitch {
       filter: blur(1px) contrast(160%) brightness(120%);
     }
@@ -122,6 +137,7 @@
   <section class="fire-core">
     <h2>The Fire Loop</h2>
     <div id="memory">[ Awaiting ignition... ]</div>
+    <div id="memory-trail"></div>
     <div id="mood-control">
       <button class="mood-button" onclick="forceMood('stable')">Stabilize</button>
       <button class="mood-button" onclick="forceMood('haunted')">Haunt</button>
@@ -149,6 +165,7 @@
 
   <script>
     const memDiv = document.getElementById("memory");
+    const trailDiv = document.getElementById("memory-trail");
     let fragments = {
       stable: [
         "The fire steadies when she breathes.",
@@ -192,6 +209,11 @@
         memDiv.innerHTML = chosen;
         memDiv.style.opacity = 1;
         if (currentMood !== "stable") memDiv.classList.add("glitch");
+        const trail = document.createElement("p");
+        trail.innerText = chosen;
+        if (currentMood !== "stable") trail.classList.add("glitch");
+        trailDiv.prepend(trail);
+        if (trailDiv.children.length > 20) trailDiv.removeChild(trailDiv.lastChild);
       }, 400);
       const delay = Math.floor(Math.random() * 7000) + 6000;
       setTimeout(renderMemory, delay);
